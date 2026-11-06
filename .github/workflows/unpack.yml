@@ -1,0 +1,21 @@
+name: Unpack files
+on: push
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack desk-bud.zip into the repo
+        run: |
+          if [ ! -f desk-bud.zip ]; then echo "Nothing to unpack"; exit 0; fi
+          unzip -q desk-bud.zip -d unpacked
+          rm -rf unpacked/.github
+          cp -a unpacked/. .
+          rm -rf unpacked desk-bud.zip
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Unpack Desk Bud files"
+          git push
