@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+  <title>Desk Bud</title>
+  <link rel="stylesheet" href="home.css">
+  <script src="home.js" defer></script>
+</head>
+<body>
+  <header>
+    <img src="../assets/icon.png" alt="" width="56" height="56">
+    <div>
+      <h1>Desk Bud</h1>
+      <p id="status" class="status">Not connected</p>
+    </div>
+  </header>
+
+  <section id="pair-section" hidden>
+    <h2>Connect your phone</h2>
+    <p>Open your Desk Bud website on your phone, then type the code it shows you. You can also type it on the website in your browser.</p>
+    <form id="pair-form">
+      <label>Website address
+        <input id="server" type="url" placeholder="https://your-site.onrender.com" required>
+      </label>
+      <label>Code from your phone
+        <input id="code" class="code" type="text" maxlength="7" autocomplete="off" spellcheck="false" required>
+      </label>
+      <button class="primary" type="submit">Connect</button>
+      <p id="pair-error" class="error" role="alert"></p>
+    </form>
+  </section>
+
+  <section id="control-section" hidden>
+    <div class="row">
+      <button id="pause" type="button">Pause Desk Bud</button>
+      <button id="stop" type="button">Stop</button>
+    </div>
+    <p class="hint">Press <kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>Esc</kbd> at any time to stop whatever it's doing.</p>
+  </section>
+
+  <section>
+    <h2>Claude API key</h2>
+    <p>Simple requests like "open YouTube" are free and need no key. Bigger jobs need one, and you pay Anthropic for what you use. <button id="keys-link" class="link" type="button">Get a key</button></p>
+    <form id="key-form" class="row">
+      <input id="api-key" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…" aria-label="Claude API key">
+      <button type="submit">Save</button>
+    </form>
+    <p id="key-note" class="hint"></p>
+    <label class="select">Brain
+      <select id="model">
+        <option value="claude-opus-5-5">Claude Opus 5.5 (smartest)</option>
+        <option value="claude-sonnet-5-5">Claude Sonnet 5.5 (cheaper)</option>
+      </select>
+    </label>
+  </section>
+
+  <section>
+    <h2>Settings</h2>
+    <label class="check"><input id="show-buddy" type="checkbox"> Show Desk Bud on my screen</label>
+    <label class="check"><input id="open-at-login" type="checkbox"> Start when my computer starts</label>
+    <label class="check"><input id="allow-commands" type="checkbox">
+      <span>Let it run terminal commands for coding jobs. You approve each one on your phone.</span>
+    </label>
+    <button id="unpair" class="danger" type="button" hidden>Disconnect this computer</button>
+  </section>
+</body>
+</html>

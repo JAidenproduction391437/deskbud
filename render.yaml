@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: desk-bud
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /healthz
+    envVars:
+      # Signs device tokens. Render generates it once, and it keeps phones
+      # and computers paired across restarts.
+      - key: SERVER_SECRET
+        generateValue: true
+      # Your GitHub repo as owner/name. The website's download buttons point
+      # at the installers on that repo's latest release.
+      - key: GITHUB_REPO
+        sync: false

@@ -1,0 +1,66 @@
+{
+  "name": "deskbud",
+  "productName": "Desk Bud",
+  "version": "1.0.0",
+  "description": "A little blue helper that uses your computer for you.",
+  "author": "Desk Bud",
+  "license": "MIT",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "app.deskbud.desktop",
+    "productName": "Desk Bud",
+    "files": [
+      "src/**",
+      "ui/**",
+      "assets/**",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "**/node_modules/@nut-tree-fork/**"
+    ],
+    "protocols": [
+      {
+        "name": "Desk Bud",
+        "schemes": [
+          "deskbud"
+        ]
+      }
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.png",
+      "artifactName": "DeskBud-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.png",
+      "category": "public.app-category.productivity",
+      "artifactName": "DeskBud-mac-${arch}.${ext}",
+      "extendInfo": {
+        "NSAppleEventsUsageDescription": "Desk Bud controls apps when you ask it to."
+      }
+    }
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
+    "@nut-tree-fork/nut-js": "^4.2.6",
+    "ws": "^8.22.1"
+  },
+  "devDependencies": {
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0"
+  }
+}

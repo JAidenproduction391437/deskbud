@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Desk Bud</title>
+  <meta name="description" content="A little blue helper that uses your computer for you.">
+  <meta name="theme-color" content="#0b1b3a">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon-192.png">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+
+  <!-- Desk Bud's face, shared by every screen -->
+  <template id="face-template">
+    <svg class="face" viewBox="0 0 300 250" role="img" aria-label="Desk Bud">
+      <rect class="face-body" x="20" y="20" width="260" height="210" rx="96"/>
+      <ellipse class="face-cheek" cx="62" cy="150" rx="19" ry="11"/>
+      <ellipse class="face-cheek" cx="238" cy="150" rx="19" ry="11"/>
+      <g class="eye eye-left">
+        <ellipse class="eye-white" cx="102" cy="108" rx="35" ry="40"/>
+        <circle class="pupil" cx="102" cy="108" r="18"/>
+        <circle class="glint" cx="110" cy="99" r="6"/>
+      </g>
+      <g class="eye eye-right">
+        <ellipse class="eye-white" cx="198" cy="108" rx="35" ry="40"/>
+        <circle class="pupil" cx="198" cy="108" r="18"/>
+        <circle class="glint" cx="206" cy="99" r="6"/>
+      </g>
+      <path class="mouth" d="M132 170 Q150 188 168 170"/>
+      <ellipse class="mouth-open" cx="150" cy="176" rx="16" ry="13"/>
+    </svg>
+  </template>
+
+  <!-- PHONE: pairing -->
+  <main id="phone-pair" class="screen screen-dark" hidden>
+    <div class="face-slot face-slot-small"></div>
+    <h1>Let's meet your computer</h1>
+    <ol class="pair-steps">
+      <li>On your computer, open <strong id="site-address"></strong></li>
+      <li>Type this code there</li>
+    </ol>
+    <p id="pair-code" class="pair-code" aria-live="polite">······</p>
+    <p id="pair-note" class="note">Getting your code…</p>
+  </main>
+
+  <!-- PHONE: Desk Bud -->
+  <main id="phone-bud" class="screen screen-dark bud" data-state="asleep" hidden>
+    <header class="bud-top">
+      <span id="link-status" class="link-status">Connecting…</span>
+      <button id="menu-button" class="ghost" type="button">Menu</button>
+    </header>
+
+    <div class="face-stage">
+      <div class="rings" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="face-slot"></div>
+    </div>
+
+    <p id="caption" class="caption" aria-live="polite"></p>
+
+    <button id="wake-button" class="primary" type="button">Start listening</button>
+
+    <div class="bud-actions">
+      <button id="stop-button" class="stop" type="button" hidden>Stop</button>
+      <form id="ask-form" class="ask">
+        <input id="ask-input" type="text" autocomplete="off" enterkeyhint="send"
+               placeholder="Or type to Desk Bud" aria-label="Type a request">
+        <button class="send" type="submit" aria-label="Send">→</button>
+      </form>
+    </div>
+
+    <dialog id="menu" class="sheet">
+      <button id="screen-button" type="button">See my computer's screen</button>
+      <button id="ears-button" type="button">Stop listening</button>
+      <button id="unpair-button" class="danger" type="button">Unpair this phone</button>
+      <button id="menu-close" class="ghost" type="button">Close</button>
+    </dialog>
+
+    <dialog id="confirm" class="sheet">
+      <h2>Desk Bud is asking</h2>
+      <p id="confirm-text"></p>
+      <button id="confirm-yes" class="primary" type="button">Yes, do it</button>
+      <button id="confirm-no" class="ghost" type="button">No</button>
+    </dialog>
+
+    <section id="screen-view" class="screen-view" hidden>
+      <header>
+        <span>Tap to click with the blue mouse</span>
+        <button id="screen-close" class="ghost" type="button">Close</button>
+      </header>
+      <img id="screen-image" alt="Your computer's screen">
+    </section>
+  </main>
+
+  <!-- COMPUTER -->
+  <main id="computer" class="screen screen-light" hidden>
+    <div class="computer-card">
+      <div class="face-slot face-slot-small"></div>
+      <h1 id="computer-title">Hi there!</h1>
+      <p class="lede">Desk Bud uses your computer for you when you ask from your phone.</p>
+
+      <section class="step">
+        <h2><span>1</span> Get the app</h2>
+        <p id="os-note"></p>
+        <div id="download-links" class="downloads"></div>
+      </section>
+
+      <section class="step">
+        <h2><span>2</span> Type the code from your phone</h2>
+        <p>Open this same website on your phone and it will show you a code.</p>
+        <form id="code-form" class="code-form">
+          <input id="code-input" type="text" maxlength="7" autocomplete="off" autocapitalize="characters"
+                 spellcheck="false" placeholder="ABC234" aria-label="Pairing code" required>
+          <button class="primary" type="submit">Connect</button>
+        </form>
+        <p id="code-note" class="note" aria-live="polite"></p>
+        <a id="retry-link" class="retry" hidden>Open Desk Bud again</a>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

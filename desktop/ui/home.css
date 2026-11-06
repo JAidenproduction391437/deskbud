@@ -1,0 +1,91 @@
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #f3f7ff;
+  color: #0b1b3a;
+  font: 14px/1.4 ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, sans-serif;
+}
+
+header { display: flex; align-items: center; gap: 12px; }
+h1 { margin: 0; font-size: 20px; }
+h2 { margin: 0 0 4px; font-size: 15px; }
+p { margin: 0; color: #52627f; }
+
+.status::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: #b9c7de;
+}
+.status.online::before { background: #1fbf75; }
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid #d6e2f7;
+  border-radius: 16px;
+  background: #fff;
+}
+
+form { display: flex; flex-direction: column; gap: 8px; }
+form.row { flex-direction: row; }
+.row { display: flex; gap: 8px; }
+.row > * { flex: 1; }
+form.row button { flex: none; }
+
+label { display: flex; flex-direction: column; gap: 4px; font-weight: 600; }
+label.check { flex-direction: row; align-items: flex-start; gap: 8px; font-weight: 400; }
+label.check input { margin: 3px 0 0; accent-color: #2f7bff; }
+label.select { flex-direction: row; align-items: center; justify-content: space-between; }
+
+input[type="url"], input[type="text"], input[type="password"], select {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1.5px solid #d6e2f7;
+  border-radius: 10px;
+  background: #f3f7ff;
+  color: inherit;
+  font: inherit;
+}
+select { width: auto; }
+.code { font-size: 20px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+
+button {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: #e4edfc;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+button:disabled { opacity: .5; cursor: default; }
+.primary { background: #2f7bff; color: #fff; }
+.danger { background: none; color: #c93030; align-self: flex-start; padding-left: 0; }
+.link { padding: 0; background: none; color: #1c5be0; font-weight: 700; text-decoration: underline; }
+
+.hint { font-size: 12.5px; }
+.error { color: #c93030; min-height: 1em; }
+kbd {
+  padding: 0 5px;
+  border: 1px solid #d6e2f7;
+  border-radius: 5px;
+  background: #f3f7ff;
+  font: inherit;
+  font-size: 12px;
+}
+
+:focus-visible { outline: 2px solid #2f7bff; outline-offset: 1px; }
