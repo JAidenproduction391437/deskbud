@@ -40,19 +40,27 @@
   </section>
 
   <section>
-    <h2>Claude API key</h2>
-    <p>Simple requests like "open YouTube" are free and need no key. Bigger jobs need one, and you pay Anthropic for what you use. <button id="keys-link" class="link" type="button">Get a key</button></p>
-    <form id="key-form" class="row">
-      <input id="api-key" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…" aria-label="Claude API key">
-      <button type="submit">Save</button>
-    </form>
-    <p id="key-note" class="hint"></p>
+    <h2>Brain for bigger jobs</h2>
+    <p>Simple requests like "open YouTube" are free and need no key. Bigger jobs need a key from Claude or Gemini, and you pay them for what you use.</p>
     <label class="select">Brain
       <select id="model">
         <option value="claude-opus-5-5">Claude Opus 5.5 (smartest)</option>
         <option value="claude-sonnet-5-5">Claude Sonnet 5.5 (cheaper)</option>
+        <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
+        <option value="gemini-3.8-flash">Gemini 3.8 Flash (often busy)</option>
       </select>
     </label>
+    <p class="hint">Claude key. <button id="keys-link" class="link" type="button">Get one</button></p>
+    <form id="key-form" class="row">
+      <input id="api-key" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…" aria-label="Claude API key">
+      <button type="submit">Save</button>
+    </form>
+    <p class="hint">Gemini key. <button id="gemini-keys-link" class="link" type="button">Get one</button></p>
+    <form id="gemini-key-form" class="row">
+      <input id="gemini-key" type="password" autocomplete="off" spellcheck="false" aria-label="Gemini API key">
+      <button type="submit">Save</button>
+    </form>
+    <p id="key-note" class="hint"></p>
   </section>
 
   <section>

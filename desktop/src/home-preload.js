@@ -8,5 +8,6 @@ contextBridge.exposeInMainWorld('deskbud', {
   setPaused: (value) => ipcRenderer.invoke('set-paused', value),
   stop: () => ipcRenderer.invoke('stop'),
   openKeysPage: () => ipcRenderer.invoke('open-keys-page'),
+  openGeminiKeysPage: () => ipcRenderer.invoke('open-gemini-keys-page'),
   onState: (handler) => ipcRenderer.on('state', (_event, state) => handler(state)),
 });

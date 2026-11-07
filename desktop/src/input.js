@@ -22,6 +22,7 @@ const KEY_NAMES = {
   tab: Key.Tab, space: Key.Space,
   backspace: Key.Backspace, delete: Key.Delete, insert: Key.Insert,
   up: Key.Up, down: Key.Down, left: Key.Left, right: Key.Right,
+  arrowup: Key.Up, arrowdown: Key.Down, arrowleft: Key.Left, arrowright: Key.Right,
   home: Key.Home, end: Key.End,
   pageup: Key.PageUp, page_up: Key.PageUp, prior: Key.PageUp,
   pagedown: Key.PageDown, page_down: Key.PageDown, next: Key.PageDown,
@@ -100,6 +101,14 @@ const input = {
       await keyboard.pressKey(...keys);
       await keyboard.releaseKey(...keys);
     }
+  },
+
+  async keyDown(text) {
+    await keyboard.pressKey(...parseChord(text));
+  },
+
+  async keyUp(text) {
+    await keyboard.releaseKey(...parseChord(text));
   },
 
   async hold(text, seconds) {

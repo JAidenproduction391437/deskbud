@@ -21,7 +21,8 @@ function render(state) {
   $('pause').textContent = state.paused ? 'Resume Desk Bud' : 'Pause Desk Bud';
   $('stop').disabled = !state.busy;
 
-  $('key-note').textContent = state.hasApiKey ? 'A key is saved, encrypted on this computer.' : '';
+  const saved = [state.hasApiKey && 'Claude', state.hasGeminiKey && 'Gemini'].filter(Boolean).join(' and ');
+  $('key-note').textContent = saved ? `Saved and encrypted on this computer: ${saved} key.` : '';
   $('model').value = state.model;
   $('show-buddy').checked = state.showBuddy;
   $('open-at-login').checked = state.openAtLogin;
@@ -49,7 +50,14 @@ $('key-form').addEventListener('submit', async (event) => {
   $('api-key').value = '';
 });
 
+$('gemini-key-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  await api.save({ geminiKey: $('gemini-key').value });
+  $('gemini-key').value = '';
+});
+
 $('keys-link').addEventListener('click', () => api.openKeysPage());
+$('gemini-keys-link').addEventListener('click', () => api.openGeminiKeysPage());
 $('pause').addEventListener('click', () => api.setPaused(!render.paused));
 $('stop').addEventListener('click', () => api.stop());
 $('unpair').addEventListener('click', () => api.unpair());

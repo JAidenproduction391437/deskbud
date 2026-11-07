@@ -15,14 +15,14 @@ A website isn't allowed to move your mouse, so the computer needs the small desk
 
 **For simple requests, no.** These are free and instant: open a website or app, search, type, press keys, scroll.
 
-**For complex work, yes.** Anything that needs to look at the screen and think, like "find the cheapest flight" or "fix the bug in my project", needs a **Claude API key**:
+**For complex work, yes.** Anything that needs to look at the screen and think, like "find the cheapest flight" or "fix the bug in my project", needs a key from **Claude** or **Gemini**:
 
-1. Create a key at [platform.claude.com](https://platform.claude.com/settings/keys).
-2. Paste it into the Desk Bud app on your computer.
+1. Create a key at [platform.claude.com](https://platform.claude.com/settings/keys) or [Google AI Studio](https://aistudio.google.com/apikey).
+2. Paste it into the Desk Bud app on your computer, and pick that brain.
 
-You pay Anthropic for what you use. Each step of a task sends a screenshot, so long jobs cost more. Set a spending limit in your Claude account.
+You pay the provider for what you use. Each step of a task sends a screenshot, so long jobs cost more. Set a spending limit in your account. Check each provider's terms for how they handle screenshots, especially on a free plan.
 
-The key stays encrypted on your computer. It never goes on GitHub or Render. Voice recognition uses the free one built into your phone's browser, so it needs no key.
+Keys stay encrypted on your computer. Never put one on GitHub or Render. Voice recognition uses the free one built into your phone's browser, so it needs no key.
 
 ## Set it up
 

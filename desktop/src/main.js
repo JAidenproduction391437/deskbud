@@ -14,6 +14,7 @@ const { captureScreen } = require('./capture.js');
 const { parseCommand } = require('./quick.js');
 const { runQuick } = require('./actions.js');
 const { Agent, explainError } = require('./agent.js');
+const { GeminiAgent, explainGeminiError } = require('./gemini.js');
 
 const KILL_SWITCH = 'Control+Alt+Escape';
 const SCREEN_FRAME_MS = 800;
@@ -27,6 +28,7 @@ let homeWindow;
 let tray;
 let blue;
 let agent;
+let geminiAgent;
 let current = null; // the running request: { id, controller }
 let paused = false;
 let screenTimer = null;
@@ -125,6 +127,7 @@ function publicState() {
     online: relay.online,
     phoneOnline: relay.peerOnline,
     hasApiKey: Boolean(settings.apiKey),
+    hasGeminiKey: Boolean(settings.geminiKey),
     model: settings.model,
     allowCommands: settings.allowCommands,
     showBuddy: settings.showBuddy,
@@ -180,6 +183,8 @@ function askPhone(text, signal) {
   });
 }
 
+const usesGemini = () => settings.model.startsWith('gemini');
+
 async function handleCommand({ id, text }) {
   if (typeof text !== 'string' || !text.trim()) return;
   if (paused) return report(id, 'done', "I'm paused on your computer right now.");
@@ -196,17 +201,17 @@ async function handleCommand({ id, text }) {
     if (intent) {
       report(id, 'working', 'On it!');
       reply = await runQuick(intent, blue);
-    } else if (settings.apiKey) {
+    } else if (usesGemini() ? settings.geminiKey : settings.apiKey) {
       report(id, 'working', 'Let me work on that…');
-      reply = await agent.run(text, controller.signal);
+      reply = await (usesGemini() ? geminiAgent : agent).run(text, controller.signal);
     } else {
-      reply = 'I can only do simple things until you add a Claude API key in the Desk Bud app.';
+      reply = `I can only do simple things until you add a ${usesGemini() ? 'Gemini' : 'Claude'} API key in the Desk Bud app.`;
     }
     report(id, 'done', reply);
   } catch (error) {
     if (!controller.signal.aborted) {
       console.error(error);
-      report(id, 'done', explainError(error));
+      report(id, 'done', explainGeminiError(error) ?? explainError(error));
     } else {
       report(id, 'done', current.stopMessage ?? 'Okay, I stopped.');
     }
@@ -370,7 +375,13 @@ function registerIpc() {
 
   ipcMain.handle('save', (_event, changes) => {
     if (typeof changes.apiKey === 'string') settings.apiKey = changes.apiKey.trim();
-    if (['claude-opus-5-5', 'claude-sonnet-5-5'].includes(changes.model)) settings.model = changes.model;
+    if (typeof changes.geminiKey === 'string') {
+      settings.geminiKey = changes.geminiKey.trim();
+      if (settings.geminiKey && !settings.apiKey) settings.model = 'gemini-3.5-flash-lite';
+    }
+    if (['claude-opus-5-5', 'claude-sonnet-5-5', 'gemini-3.8-flash', 'gemini-3.5-flash-lite'].includes(changes.model)) {
+      settings.model = changes.model;
+    }
     if (typeof changes.allowCommands === 'boolean') settings.allowCommands = changes.allowCommands;
     if (typeof changes.showBuddy === 'boolean') {
       settings.showBuddy = changes.showBuddy;
@@ -379,12 +390,14 @@ function registerIpc() {
     if (typeof changes.openAtLogin === 'boolean') app.setLoginItemSettings({ openAtLogin: changes.openAtLogin });
     config.save(settings);
     agent.reset();
+    geminiAgent.reset();
     pushState();
   });
 
   ipcMain.handle('set-paused', (_event, value) => setPaused(Boolean(value)));
   ipcMain.handle('stop', () => stopEverything('Stopped from the computer.'));
   ipcMain.handle('open-keys-page', () => shell.openExternal('https://platform.claude.com/settings/keys'));
+  ipcMain.handle('open-gemini-keys-page', () => shell.openExternal('https://aistudio.google.com/apikey'));
 }
 
 /* ---------- Start up ---------- */
@@ -414,14 +427,16 @@ if (!app.requestSingleInstanceLock()) {
     registerIpc();
     createOverlay();
     blue = new BlueMouse({ send: sendOverlay });
-    agent = new Agent({
+    const helpers = {
       blue,
       getConfig: () => settings,
       ask: askPhone,
       progress: (text) => {
         if (current) report(current.id, 'working', text);
       },
-    });
+    };
+    agent = new Agent(helpers);
+    geminiAgent = new GeminiAgent(helpers);
 
     buildTray();
     watchMouse();

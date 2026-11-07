@@ -2,13 +2,14 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { app, safeStorage } = require('electron');
 
-const SECRET_FIELDS = ['token', 'apiKey'];
+const SECRET_FIELDS = ['token', 'apiKey', 'geminiKey'];
 
 const DEFAULTS = {
   server: '',
   token: '',
   deviceName: '',
   apiKey: '',
+  geminiKey: '',
   model: 'claude-opus-5-5',
   allowCommands: false,
   showBuddy: true,

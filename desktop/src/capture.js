@@ -7,7 +7,7 @@ function fit(width, height, longEdge) {
 }
 
 /**
- * Takes a picture of the main screen.
+ * Takes a picture of the main screen, as JPEG at the given quality, or as PNG if quality is 'png'.
  * Returns { base64, width, height, bounds }, where bounds is the screen in app coordinates.
  */
 async function captureScreen(longEdge = 1280, quality = 80, region = null) {
@@ -32,7 +32,8 @@ async function captureScreen(longEdge = 1280, quality = 80, region = null) {
   }
 
   const { width, height } = image.getSize();
-  return { base64: image.toJPEG(quality).toString('base64'), width, height, bounds };
+  const encoded = quality === 'png' ? image.toPNG() : image.toJPEG(quality);
+  return { base64: encoded.toString('base64'), width, height, bounds };
 }
 
 module.exports = { captureScreen };
